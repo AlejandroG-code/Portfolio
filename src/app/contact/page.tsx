@@ -95,7 +95,7 @@ export default function ContactPage() {
               </span>
             </h1>
             <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              I'm always open to new opportunities and collaborations. Feel free to reach out through any of the platforms below.
+              I&#39;m always open to new opportunities and collaborations. Feel free to reach out through any of the platforms below.
             </p>
           </motion.div>
 

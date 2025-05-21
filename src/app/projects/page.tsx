@@ -23,7 +23,7 @@ export default function Projects() {
               </span>
             </h1>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              I'm currently working on exciting projects. Check back soon to see my work!
+              I&#39;m currently working on exciting projects. Check back soon to see my work!
             </p>
           </motion.div>
 
@@ -62,7 +62,7 @@ export default function Projects() {
             className="mt-20 text-center"
           >
             <h3 className="text-2xl font-semibold text-gray-300 mb-4">
-              Want to collaborate or see what I'm working on?
+              Want to collaborate or see what I&#39;m working on?
             </h3>
             <a
               href="/contact"
