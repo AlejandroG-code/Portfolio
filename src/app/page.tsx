@@ -16,13 +16,13 @@ export default function Home() {
         </p>
         <div className="flex flex-wrap justify-center gap-4 mt-6">
           <a
-            href="#"
+            href="/projects"
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition"
           >
             See my work
           </a>
           <a
-            href="#"
+            href="/contact"
             className="border border-indigo-500 hover:bg-indigo-600 hover:text-white text-indigo-300 font-medium px-6 py-3 rounded-xl transition"
           >
             Contact me
