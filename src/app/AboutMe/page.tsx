@@ -19,7 +19,7 @@ export default function AboutMe() {
               <div className="w-full md:w-2/3 space-y-10">
                   <div>
                       <h1 className="text-3xl sm:text-4xl font-bold text-indigo-500 flex items-center gap-2">
-                          Hello, I'm Luis Alejandro Gonzalez Gil!{" "}
+                          Hello, I&#39;m Luis Alejandro Gonzalez Gil!{" "}
                       </h1>
                   </div>
 

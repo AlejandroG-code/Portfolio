@@ -11,7 +11,7 @@ export default function Home() {
       {/* Hero Section */}
       <main className="flex flex-col items-center justify-center text-center px-4 py-24 space-y-6">
         <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight">
-          Hi, i'm <span className="text-indigo-600">Alejandro</span>
+          Hi, i&#39;m <span className="text-indigo-600">Alejandro</span>
         </h1>
         <p className="max-w-2xl text-gray-400 text-lg">
           Full stack developer.
@@ -21,20 +21,20 @@ export default function Home() {
             href="#"
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition"
           >
-            Ver proyectos
+            See my work
           </a>
           <a
             href="#"
             className="border border-indigo-500 hover:bg-indigo-600 hover:text-white text-indigo-300 font-medium px-6 py-3 rounded-xl transition"
           >
-            Contactar
+            Contact me
           </a>
         </div>
       </main>
 
       {/* Footer */}
       <footer className="border-t border-gray-800 text-center py-6 text-sm text-gray-500">
-        © {new Date().getFullYear()} Alejandro. Todos los derechos reservados.
+        © {new Date().getFullYear()} Alejandro. All rights reserved.
       </footer>
     </div>
   );
