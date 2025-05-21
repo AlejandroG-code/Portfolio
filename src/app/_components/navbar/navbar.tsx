@@ -17,9 +17,9 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex gap-6">
             <Link href="/" className="hover:text-indigo-300">Home</Link>
-            <Link href="AboutMe" className="hover:text-indigo-300">About Me</Link>
-            <Link href="Projects" className="hover:text-indigo-300">Projects</Link>
-            <Link href="Contact" className="hover:text-indigo-300">Contact</Link>
+            <Link href="aboutme" className="hover:text-indigo-300">About Me</Link>
+            <Link href="projects" className="hover:text-indigo-300">Projects</Link>
+            <Link href="contact" className="hover:text-indigo-300">Contact</Link>
           </div>
         </div>
       </nav>
