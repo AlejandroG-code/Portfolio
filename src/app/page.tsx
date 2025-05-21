@@ -62,7 +62,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            Hi, I'm <span className="text-indigo-400">Alejandro</span>
+            Hi, I&#39;m <span className="text-indigo-400">Alejandro</span>
           </motion.h1>
 
           <motion.p

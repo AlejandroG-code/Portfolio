@@ -41,7 +41,7 @@ export default function AboutMe() {
                 transition={{ delay: 0.2, duration: 0.6 }}
               >
                 <h1 className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
-                  Hello, I'm <span className="text-white">Alejandro Gonzalez</span>
+                  Hello, I&#39;m <span className="text-white">Alejandro Gonzalez</span>
                 </h1>
                 <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mb-6"></div>
                 <p className="text-lg text-gray-400 italic">
