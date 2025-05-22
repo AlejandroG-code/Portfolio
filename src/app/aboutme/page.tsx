@@ -79,18 +79,22 @@ export default function AboutMe() {
                     <span className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
                     Skills
                   </h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start">
-                      <span className="text-indigo-400 mr-2">•</span>
-                      <span className="text-gray-300"><strong className="text-white">Programming:</strong> Python, Java, JavaScript</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-indigo-400 mr-2">•</span>
-                      <span className="text-gray-300"><strong className="text-white">Technical:</strong> Networks, OS, Data Structures</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-indigo-400 mr-2">•</span>
-                      <span className="text-gray-300"><strong className="text-white">Languages:</strong> Spanish (Native), English (C1)</span>
+                    <ul className="space-y-3">
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-2">•</span>
+                        <span className="text-gray-300"><strong className="text-white">Languages:</strong> Python, Java, JavaScript, HTML, CSS</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-2">•</span>
+                        <span className="text-gray-300"><strong className="text-white">Frameworks:</strong> React, Node.js, Tailwind CSS</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-2">•</span>
+                        <span className="text-gray-300"><strong className="text-white">Tools:</strong> Git, Visual Studio Code</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-indigo-400 mr-2">•</span>
+                        <span className="text-gray-300"><strong className="text-white">Soft Skills:</strong> Fast Learner, Responsible, Sociable, Team Player, Self-taught</span>
                     </li>
                   </ul>
                 </motion.div>
@@ -110,16 +114,23 @@ export default function AboutMe() {
                     <li className="flex items-start">
                       <span className="text-indigo-400 mr-2">•</span>
                       <span className="text-gray-300">
-                        <strong className="text-white">Programming Instructor</strong> - Taught Java and Python basics to beginners (6 months each)
+                        <strong className="text-white">Programming Instructor</strong> – Taught basic Java and Python to first-year university students.
                       </span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-indigo-400 mr-2">•</span>
                       <span className="text-gray-300">
-                        <strong className="text-white">Technical Mentor</strong> - Guided students in programming competitions and projects
+                        <strong className="text-white">Team Leader & Mentor</strong> – Guided students in programming projects and decision-based data systems.
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-indigo-400 mr-2">•</span>
+                      <span className="text-gray-300">
+                        <strong className="text-white">Project Developer</strong> – Developed a car wash management system and a personal portfolio website.
                       </span>
                     </li>
                   </ul>
+
                 </motion.div>
               </div>
 
@@ -136,22 +147,44 @@ export default function AboutMe() {
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-indigo-900/20 p-4 rounded-lg border border-indigo-500/20">
-                    <h4 className="font-medium text-white mb-1">Programming Competitions</h4>
+                    <h4 className="font-medium text-white mb-1">Programming Contests</h4>
                     <ul className="text-sm text-gray-300 space-y-1">
-                      <li>🥇 2x First Place (Internal)</li>
-                      <li>🥈 1x Second Place (Internal)</li>
+                      <li>🥇 3x First Place - Internal Competitions</li>
+                      <li>🥈 1x Second Place - Internal Competitions</li>
                     </ul>
                   </div>
                   <div className="bg-indigo-900/20 p-4 rounded-lg border border-indigo-500/20">
-                    <h4 className="font-medium text-white mb-1">IEEExtreme</h4>
+                    <h4 className="font-medium text-white mb-1">IEEExtreme & Practice</h4>
                     <ul className="text-sm text-gray-300 space-y-1">
-                      <li>🏆 Top 33% Globally (17.0)</li>
-                      <li>🏆 Top 30% Globally (18.0)</li>
-                      <li>🏆 Top 1.3% (Practice)</li>
+                      <li>🏆 IEEExtreme 17.0 – Top 33% Globally</li>
+                      <li>🏆 IEEExtreme 18.0 – Top 30% Globally</li>
+                      <li>🏆 IEEExtreme Practice – Top 1.3%</li>
                     </ul>
                   </div>
                 </div>
+
               </motion.div>
+            
+              {/* Goals */}
+              <motion.div
+                className="bg-gray-900/50 p-6 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+              >
+                <div className="bg-gray-900/50 p-6 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300">
+                  <h3 className="text-2xl font-semibold text-indigo-400 mb-4 flex items-center">
+                    <span className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                    Goals
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed">
+                  My short-term goal is to deepen my knowledge in Full Stack Development, becoming highly proficient in both front-end and back-end technologies. In the long term, I aim to work on large-scale software systems, contribute to open-source communities, and eventually lead a team of developers in building impactful tech solutions.
+                  </p>
+                </div>
+
+              </motion.div>
+
+
 
               {/* Contact */}
               <motion.div
@@ -185,7 +218,7 @@ export default function AboutMe() {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span className="text-gray-300">Available upon request</span>
+                    <span className="text-gray-300">+52 4434489639</span>
                   </div>
                 </div>
               </motion.div>
