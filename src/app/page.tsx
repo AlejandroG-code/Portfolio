@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Navbar from './_components/navbar/navbar';
 import Image from 'next/image';
+import AnimatedBackground from './_components/animatedBackground/AnimatedBackground';
 
 export default function Home() {
   return (
