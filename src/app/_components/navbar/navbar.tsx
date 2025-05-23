@@ -19,28 +19,26 @@ export default function Navbar() {
   // Animaciones
   const menuVariants = {
     hidden: {
-      clipPath: "inset(0% 0% 100% 0%)",
-      opacity: 0,
+      clipPath: "inset(0% 0% 100% 0%)", // El cuadro se oculta desde abajo hacia arriba
+      opacity: 0, // El cuadro comienza invisible
       transition: {
-        duration: 0.3,
+        duration: 1, // Duración de la animación al ocultarse
         ease: "easeInOut",
       },
     },
     visible: {
-      clipPath: "inset(0% 0% 0% 0%)",
-      opacity: 1,
+      clipPath: "inset(0% 0% 0% 0%)", // El cuadro se expande completamente
+      opacity: 1, // El cuadro se vuelve visible
       transition: {
-        duration: 0.6,
+        duration: 1, // Duración de la animación al mostrarse
         ease: "easeInOut",
-        when: "beforeChildren",
-        staggerChildren: 0.1,
       },
     },
     exit: {
-      clipPath: "inset(0% 0% 100% 0%)",
-      opacity: 0,
+      clipPath: "inset(0% 0% 100% 0%)", // El cuadro se oculta hacia arriba
+      opacity: 0, // El cuadro desaparece gradualmente
       transition: {
-        duration: 0.4,
+        duration: 0.5, // Duración de la animación al desaparecer
         ease: "easeInOut",
       },
     },
@@ -48,7 +46,7 @@ export default function Navbar() {
 
   const linkVariants = {
     hidden: { opacity: 0, y: -10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
@@ -87,7 +85,15 @@ export default function Navbar() {
           className="md:hidden text-white"
           aria-label="Toggle menu"
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          <motion.div
+            key={isOpen ? "close-icon" : "menu-icon"}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+          >
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </motion.div>
         </button>
       </div>
 

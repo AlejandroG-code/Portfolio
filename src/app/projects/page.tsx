@@ -3,13 +3,11 @@
 import React from 'react';
 import Navbar from "../_components/navbar/navbar";
 import { motion } from 'framer-motion';
-import AnimatedBackground from '../_components/animatedBackground/AnimatedBackground';
 
 export default function Projects() {
   return (
     <>
       <Navbar />
-      <AnimatedBackground />
       <section className="bg-gray-950 text-white py-20 px-4 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header with animation */}
