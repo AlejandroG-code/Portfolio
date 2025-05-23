@@ -4,7 +4,6 @@ import React from 'react';
 import Navbar from '../_components/navbar/navbar';
 import Image from "next/image";
 import { motion } from 'framer-motion';
-import { h3 } from 'framer-motion/client';
 
 export default function AboutMe() {
   return (
