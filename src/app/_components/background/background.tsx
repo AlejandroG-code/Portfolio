@@ -135,7 +135,7 @@ export default function Background() {
           background-size: 200% 200%;
           background-repeat: no-repeat;
           animation: grid-lighting 5s infinite alternate linear;
-          opacity: 0.4;
+          opacity: 0.5;
           mix-blend-mode: soft-light;
         }
 
