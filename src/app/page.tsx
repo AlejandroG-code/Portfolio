@@ -71,7 +71,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            Full Stack Developer & Digital Craftsman
+            Full Stack Developer & Tech Enthusiast.
           </motion.p>
 
           <motion.div
@@ -158,7 +158,7 @@ export default function Home() {
         <footer className="border-t border-gray-800 text-center py-6 text-sm text-gray-500">
           <div className="container mx-auto px-4">
             <p>© {new Date().getFullYear()} Alejandro Gonzalez. All rights reserved.</p>
-            <p className="mt-1 text-xs text-gray-600">Crafting digital experiences with passion</p>
+            <p className="mt-1 text-xs text-gray-600">Made with passion</p>
           </div>
         </footer>
       </div>
