@@ -1,0 +1,15 @@
+@keyframes test-lighting {
+    0% {
+      background-color: rgba(139, 0, 139, 0.1); /* Morado tenue */
+    }
+    50% {
+      background-color: rgba(0, 0, 255, 0.1);   /* Azul tenue */
+    }
+    100% {
+      background-color: rgba(139, 0, 139, 0.1); /* Morado tenue */
+    }
+  }
+  
+  .animate-lighting {
+    animation: test-lighting 5s infinite alternate;
+  }
