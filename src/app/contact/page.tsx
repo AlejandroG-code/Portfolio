@@ -4,6 +4,7 @@ import Navbar from "../_components/navbar/navbar";
 import { motion } from 'framer-motion';
 import React from "react";
 import { useState } from 'react';
+import Background from '../_components/background/background'; // Import Background component
 
 export default function ContactPage() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -78,85 +79,88 @@ export default function ContactPage() {
   ];
 
   return (
-    <>
-      <Navbar />
-      <section className="bg-gray-950 text-white py-20 px-4 min-h-screen">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
-                Contact Me
-              </span>
-            </h1>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              I&#39;m always open to new opportunities and collaborations. Feel free to reach out through any of the platforms below.
-            </p>
-          </motion.div>
+    <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
+      <Background /> {/* Renderiza el componente Background aquí */}
+      <>
+        <Navbar />
+        <section className="py-20 px-4 min-h-screen relative z-10"> {/* Añadí z-10 */}
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                  Contact Me
+                </span>
+              </h1>
+              <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+                I&#39;m always open to new opportunities and collaborations. Feel free to reach out through any of the platforms below.
+              </p>
+            </motion.div>
 
-          {/* Contact Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {contacts.map((contact, index) => (
-              <motion.div
-                key={contact.type}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-gray-900/50 hover:bg-gray-800/50 border border-gray-800 hover:border-indigo-500/30 rounded-xl p-6 transition-all duration-300 cursor-pointer"
-                onClick={contact.action}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="p-3 bg-gray-800 rounded-lg text-indigo-400">
-                    {contact.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-gray-400 text-sm font-medium">{contact.title}</h3>
-                    <p className="text-white font-medium mt-1">
-                      {contact.value}
-                    </p>
-                    {copied === contact.type && (
-                      <span className="text-xs text-green-400 mt-1 block">
-                        Copied to clipboard!  
+            {/* Contact Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {contacts.map((contact, index) => (
+                <motion.div
+                  key={contact.type}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="bg-gray-900/50 hover:bg-gray-800/50 border border-gray-800 hover:border-indigo-500/30 rounded-xl p-6 transition-all duration-300 cursor-pointer"
+                  onClick={contact.action}
+                >
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-gray-800 rounded-lg text-indigo-400">
+                      {contact.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-gray-400 text-sm font-medium">{contact.title}</h3>
+                      <p className="text-white font-medium mt-1">
+                        {contact.value}
+                      </p>
+                      {copied === contact.type && (
+                        <span className="text-xs text-green-400 mt-1 block">
+                          Copied to clipboard!
                         </span>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Contact Form Placeholder */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="mt-20 bg-gray-900/50 border border-gray-800 rounded-xl p-8"
-          >
-            <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-              <span className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
-              Mesage Me
-            </h2>
-            <p className="text-gray-400 mb-6">
-                I am currently working on a contact form. In the meantime, feel free to reach out through the channels above.
-            </p>
-            <div className="space-y-4 opacity-50 pointer-events-none">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-800 h-12 rounded-lg"></div>
-                <div className="bg-gray-800 h-12 rounded-lg"></div>
-              </div>
-              <div className="bg-gray-800 h-12 rounded-lg"></div>
-              <div className="bg-gray-800 h-32 rounded-lg"></div>
-              <div className="bg-indigo-600/30 h-12 rounded-lg"></div>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
-    </>
+
+            {/* Contact Form Placeholder */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="mt-20 bg-gray-900/50 border border-gray-800 rounded-xl p-8"
+            >
+              <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
+                <span className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                Mesage Me
+              </h2>
+              <p className="text-gray-400 mb-6">
+                I am currently working on a contact form. In the meantime, feel free to reach out through the channels above.
+              </p>
+              <div className="space-y-4 opacity-50 pointer-events-none">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-gray-800 h-12 rounded-lg"></div>
+                  <div className="bg-gray-800 h-12 rounded-lg"></div>
+                </div>
+                <div className="bg-gray-800 h-12 rounded-lg"></div>
+                <div className="bg-gray-800 h-32 rounded-lg"></div>
+                <div className="bg-indigo-600/30 h-12 rounded-lg"></div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      </>
+    </div>
   );
 }

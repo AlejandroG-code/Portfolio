@@ -1,35 +1,15 @@
+// app/page.js
 'use client';
 
 import { motion } from 'framer-motion';
 import Navbar from './_components/navbar/navbar';
 import Image from 'next/image';
+import Background from './_components/background/background'; // Importa el componente de fondo
 
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
-      {/* Modern Background Texture */}
-      <div
-        className="absolute inset-0 opacity-5 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%), 
-                           linear-gradient(to bottom right, transparent 60%, rgba(99, 102, 241, 0.05) 100%)`,
-          backgroundSize: 'cover',
-          zIndex: 0,
-        }}
-      />
-      
-      {/* Subtle grid pattern */}
-      <div 
-        className="absolute inset-0 opacity-5 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
-                           linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)`,
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-indigo-900/20 z-0" />
+      <Background /> {/* Renderiza el componente de fondo */}
 
       {/* Overlay content */}
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -45,11 +25,11 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 rounded-full border-2 border-indigo-500/30 overflow-hidden">
-              <Image 
-                src="/yo.jpg" 
-                alt="Alejandro Gonzalez" 
-                width={128} 
-                height={128} 
+              <Image
+                src="/yo.jpg"
+                alt="Alejandro Gonzalez"
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
                 priority
               />
@@ -97,16 +77,16 @@ export default function Home() {
           </motion.div>
 
           {/* Social links */}
-          <motion.div 
+          <motion.div
             className="flex gap-4 mt-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
           >
             {/* GitHub */}
-            <a 
-              href="https://github.com/AlejandroG-code" 
-              target="_blank" 
+            <a
+              href="https://github.com/AlejandroG-code"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-indigo-400 transition-colors"
               aria-label="GitHub"
@@ -119,9 +99,9 @@ export default function Home() {
             </a>
 
             {/* LinkedIn */}
-            <a 
-              href="https://linkedin.com/in/alejandro-gonzalez-06b69031b" 
-              target="_blank" 
+            <a
+              href="https://linkedin.com/in/alejandro-gonzalez-06b69031b"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-indigo-400 transition-colors"
               aria-label="LinkedIn"
@@ -136,9 +116,9 @@ export default function Home() {
             </a>
 
             {/* Instagram */}
-            <a 
-              href="https://instagram.com/a1ex_glz" 
-              target="_blank" 
+            <a
+              href="https://instagram.com/a1ex_glz"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-indigo-400 transition-colors"
               aria-label="Instagram"
