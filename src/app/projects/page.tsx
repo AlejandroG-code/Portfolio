@@ -10,9 +10,9 @@ const projectData = [
   {
     id: 1,
     name: "My Portfolio",
-    tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "TypeScript", "CSS", "HTML", "Exists = True"],
+    tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "TypeScript", "Exists = True"],
     description: "My personal portfolio website showcasing my skills and projects.",
-    creationDate: "2024-07-01",
+    creationDate: "2025-07-19",
     githubUrl: "https://github.com/AlejandroG-code/Portfolio",
   },
   {
