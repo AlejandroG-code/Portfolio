@@ -148,6 +148,9 @@ export default function Home() {
     const command = consoleInput.trim().toLowerCase();
     if (!command) return;
 
+
+
+    
     // Add to history
     setCommandHistory(prev => [...prev, command]);
     setHistoryIndex(-1);
