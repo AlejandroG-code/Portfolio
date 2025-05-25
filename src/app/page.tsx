@@ -1,69 +1,263 @@
-// app/page.js
+// app/page.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import Navbar from './_components/navbar/navbar';
 import Image from 'next/image';
-import Background from './_components/background/background'; // Import the background component
-import React, { useState, useCallback, useEffect } from 'react';
-import { getCookie, setCookie, deleteCookie } from 'cookies-next'; // Import functions for client-side cookies
+import Background from './_components/background/background';
+import React, { useState, useEffect } from 'react';
+import { getCookie, setCookie } from 'cookies-next';
+
+// Contenido de las páginas en formato consola
+const consolePages = {
+  aboutme: `
+  ABOUT ALEJANDRO GONZALEZ
+  ========================
+  
+  Name: Alejandro Gonzalez
+  Role: Systems Engineering Student & Aspiring Full Stack Developer
+  Location: Michoacán, México
+  
+  EDUCATION
+  ---------
+  • Systems Engineering Student at Universidad Vasco de Quiroga (UVAQ)
+  
+  SKILLS
+  ------
+  • Programming Languages: Python, Java, JavaScript, HTML, CSS
+  • Frameworks: React, Node.js, Tailwind CSS
+  • Tools: Git, VS Code
+  • Languages: Spanish (Native), English (C1), German (B1), Italian (A2), French (A2)
+  
+  EXPERIENCE
+  ----------
+  • Programming Instructor: Taught basic Java and Python to university students.
+  • Team Leader & Mentor: Guided students in programming and data systems projects.
+  • Project Developer: Developed stock analysis tool and personal portfolio website.
+  
+  ACHIEVEMENTS
+  ------------
+  • Programming Contests: 🥇 3x First Place (Internal)
+  • Programming Contests: 🥇 1x Second Place (Internal) 
+  • IEEExtreme: Top rankings globally in multiple editions.
+  🏆 IEEExtreme 17.0 – Top 54.5% Globally Rank 2,307 out of 4,231
+  🏆 IEEExtreme 18.0 – Top 29.6% Globally Rank 1,717 out of 5,801</li>
+  🏆 IEEExtreme Practice comunity – Top 9.4% Globally Rank 2,727 out of 29,001
+
+  GOALS
+  -----
+  Short-term: Master Full Stack Development.
+  Long-term: Work on large-scale systems and lead developer teams.
+  
+  `,
+  projects: `
+MY PROJECTS
+===========
+
+1. Personal Portfolio Website
+   • Description: Interactive portfolio with console mode. Built with modern web technologies.
+   • Tech: Next.js, TypeScript, TailwindCSS, Framer Motion
+   • Link: (This view)
+
+`,
+contact: `
+CONTACT INFORMATION
+===================
+
+Email: alejandro.g.engineer@gmail.com
+Phone: +52 4434489639
+LinkedIn: linkedin.com/in/alejandro-gonzalez-06b69031b
+GitHub: github.com/AlejandroG-code
+Instagram: instagram.com/a1ex_glz
+
+Feel free to reach out for collaborations, opportunities, or just a chat!
+
+`,
+  help: `
+AVAILABLE COMMANDS
+=================
+
+• console - Toggle console mode
+• aboutme - Show about information
+• projects - List my projects
+• contact - Show contact details
+• clear - Clear the console
+• help - Show this help message
+
+Navigate using these commands.
+`
+};
 
 export default function Home() {
-  const [isNostalgiaMode, setIsNostalgiaMode] = useState(false);
+  const [isConsoleMode, setIsConsoleMode] = useState(false);
   const [isConsoleVisible, setIsConsoleVisible] = useState(false);
   const [consoleInput, setConsoleInput] = useState('');
-  const [inspirationListVisible, setInspirationListVisible] = useState(false);
-  const [consoleOutput, setConsoleOutput] = useState('');
-  // Initialize nostalgia mode from cookie on component mount
+  const [consoleOutput, setConsoleOutput] = useState<string[]>([]);
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+
+  // Initialize console mode from cookie
   useEffect(() => {
-    const nostalgiaCookie = getCookie('nostalgia');
-    if (nostalgiaCookie === 'true') {
-      setIsNostalgiaMode(true);
+    const consoleModeCookie = getCookie('consoleMode');
+    if (consoleModeCookie === 'true') {
+      setIsConsoleMode(true);
+      addOutput('Console mode activated. Type "help" for commands.');
     }
   }, []);
 
-  const toggleConsole = () => {
-    setIsConsoleVisible(!isConsoleVisible);
-    setConsoleInput(''); // Clear input on open/close
-    setConsoleOutput(''); // Clear output on open/close
+  const addOutput = (text: string) => {
+    setConsoleOutput(prev => [...prev, text]);
   };
 
-  const handleConsoleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setConsoleInput(event.target.value);
+  const toggleConsole = () => {
+    setIsConsoleVisible(!isConsoleVisible);
+    setConsoleInput('');
+    if (!isConsoleVisible) {
+      addOutput('Console opened. Type "help" for commands.');
+    }
+  };
+
+  const handleConsoleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConsoleInput(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      executeCommand();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
+        const newIndex = historyIndex + 1;
+        setHistoryIndex(newIndex);
+        setConsoleInput(commandHistory[commandHistory.length - 1 - newIndex]);
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setConsoleInput(commandHistory[commandHistory.length - 1 - newIndex]);
+      } else {
+        setHistoryIndex(-1);
+        setConsoleInput('');
+      }
+    }
   };
 
   const executeCommand = () => {
     const command = consoleInput.trim().toLowerCase();
-    setConsoleInput(''); // Clear input after execution
+    if (!command) return;
+
+    // Add to history
+    setCommandHistory(prev => [...prev, command]);
+    setHistoryIndex(-1);
+
+    setConsoleInput('');
+    let output = '';
+
     switch (command) {
-      case 'nostalgia':
-        const newNostalgiaState = !isNostalgiaMode;
-        setIsNostalgiaMode(newNostalgiaState);
-        setCookie('nostalgia', newNostalgiaState.toString(), { path: '/' });
-        setConsoleOutput(`Nostalgia mode ${newNostalgiaState ? 'on' : 'off'}.`);
+      case 'console':
+        const newConsoleState = !isConsoleMode;
+        setIsConsoleMode(newConsoleState);
+        setCookie('consoleMode', newConsoleState.toString(), { path: '/' });
+        output = `Console mode ${newConsoleState ? 'activated' : 'deactivated'}.`;
         break;
-      case 'inspire':
-        setInspirationListVisible(!inspirationListVisible);
-        setConsoleOutput(`Inspiration list toggled ${!inspirationListVisible ? 'visible' : 'hidden'}.`);
-        break;
+      case 'aboutme':
+        addOutput(consolePages.aboutme);
+        return;
+      case 'projects':
+        addOutput(consolePages.projects);
+        return;
+      case 'contact':
+        addOutput(consolePages.contact);
+        return;
       case 'help':
-        setConsoleOutput('Available commands: nostalgia, inspire');
+        output = consolePages.help;
         break;
+      case 'clear':
+        setConsoleOutput([]);
+        return;
       default:
-        setConsoleOutput(`Unknown command: ${command}. Type 'help' for available commands.`);
+        output = `Command not found: ${command}. Type 'help' for available commands.`;
+    }
+
+    addOutput(`$ ${command}`);
+    if (output) {
+      addOutput(output);
     }
   };
 
-  return (
-    <div className={`relative min-h-screen bg-gray-950 text-white overflow-hidden ${isNostalgiaMode ? 'nostalgia-mode' : ''}`}>
-      <Background /> {/* Render the background component */}
+  // Render Console Mode (75% de altura)
+  if (isConsoleMode) {
+    return (
+      <div className="fixed inset-0 bg-black text-green-400 font-mono p-8">
+        <div className="h-full max-w-6xl mx-auto flex flex-col">
+          <div className="mb-4">
+            <h1 className="text-2xl mb-2">ALEJANDRO GONZALEZ - TERMINAL</h1>
+            <div className="text-md text-green-600">Last login: {new Date().toLocaleString()}</div>
+          </div>
+          
+          {/* Área de terminal ampliada */}
+          <div className="console-output h-[70vh] mb-6 overflow-y-auto border-2 border-green-600 p-4 rounded-lg bg-black/90">
+          {consoleOutput.length === 0 && (
+              <div className="text-green-500 text-lg">Type 'help' to see available commands.</div>
+            )}
+            {consoleOutput.map((line, index) => (
+              <div key={index} className="mb-2 text-lg">
+                {line.split('\n').map((paragraph, i) => (
+                  <div key={i}>{paragraph || <br />}</div>
+                ))}
+              </div>
+            ))}
+            <div className="flex items-start mt-4">
+              <span className="text-green-500 mr-3 text-xl">$</span>
+              <span className="animate-pulse text-xl">▋</span>
+            </div>
+          </div>
+          
+          {/* Input más grande */}
+          <div className="flex items-center">
+            <span className="text-green-500 mr-3 text-xl">$</span>
+            <input
+              type="text"
+              className="console-input flex-grow bg-black text-green-400 p-3 text-lg focus:outline-none border-b-2 border-green-500"
+              value={consoleInput}
+              onChange={handleConsoleInputChange}
+              onKeyDown={handleKeyDown}
+              autoFocus
+            />
+            <button 
+              onClick={executeCommand} 
+              className="console-button ml-4 px-6 py-3 text-lg border-2 border-green-500 hover:bg-green-900/30"
+            >
+              EXECUTE
+            </button>
+          </div>
+          
+          <div className="mt-6 text-lg">
+            <button 
+              onClick={() => {
+                setIsConsoleMode(false);
+                setCookie('consoleMode', 'false', { path: '/' });
+              }}
+              className="text-green-500 hover:text-green-300"
+            >
+              [ Exit Console Mode ]
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-      {/* Overlay content */}
+  // Render Normal Mode
+  return (
+    <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
+      <Background />
+      
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Navbar */}
         <Navbar />
 
-        {/* Hero Section */}
         <main className="flex-grow flex flex-col items-center justify-center text-center px-4 py-12 sm:py-24 space-y-8">
           <motion.div
             className="mb-8"
@@ -89,7 +283,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            Hi, I&#39;m <span className="text-indigo-400">Alejandro</span>
+            Hi, I'm <span className="text-indigo-400">Alejandro</span>
           </motion.h1>
 
           <motion.p
@@ -181,7 +375,6 @@ export default function Home() {
           </motion.div>
         </main>
 
-        {/* Footer */}
         <footer className="border-t border-gray-800 text-center py-6 text-sm text-gray-500">
           <div className="container mx-auto px-4">
             <p>© {new Date().getFullYear()} Alejandro Gonzalez. All rights reserved.</p>
@@ -189,69 +382,55 @@ export default function Home() {
           </div>
         </footer>
 
-        {/* Inspiration List Section (conditionally visible) */}
-        {inspirationListVisible && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-20 left-4 right-4 bg-gray-800 rounded-md p-6 z-50 shadow-lg border border-gray-700"
-          >
-            <h2 className="text-lg font-semibold text-gray-300 mb-4">Things That Inspire Me</h2>
-            <button onClick={() => setInspirationListVisible(false)} className="absolute top-2 right-2 text-gray-500 hover:text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <div>
-              <h3 className="text-md text-gray-400 mb-2">Books</h3>
-              <ul>
-                <li>The Little Prince</li>
-                <li>One Hundred Years of Solitude</li>
-                {/* ... more books ... */}
-              </ul>
-              <h3 className="text-md text-gray-400 mt-4 mb-2">Music</h3>
-              <ul>
-                <li>Lo-fi hip hop</li>
-                <li>Indie rock</li>
-                {/* ... more music ... */}
-              </ul>
-              {/* ... more categories ... */}
-            </div>
-          </motion.div>
-        )}
-
         {/* Console Button */}
         <div className="fixed bottom-4 right-4 z-50">
-          <button onClick={toggleConsole} className="group relative border border-indigo-500 hover:border-indigo-400 text-indigo-300 hover:text-white font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10 text-sm">
-            <span className="relative z-10">{isConsoleVisible ? 'Close Console' : 'Open Console'}</span>
-            <span className="absolute inset-0 bg-indigo-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+          <button 
+            onClick={toggleConsole} 
+            className="group relative border border-green-500 hover:border-green-400 text-green-300 hover:text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10 text-sm font-mono"
+          >
+            <span className="relative z-10">{isConsoleVisible ? '[CLOSE]' : '[TERMINAL]'}</span>
+            <span className="absolute inset-0 bg-green-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
           </button>
         </div>
 
-        {/* Console Interface (conditionally visible) */}
+        {/* Console Interface */}
         {isConsoleVisible && (
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-0 left-0 w-full bg-gray-800 p-4 border-t border-gray-700 flex items-center z-50"
+            className="fixed bottom-0 left-0 w-full bg-gray-900/95 p-4 border-t border-green-500 flex flex-col z-50 font-mono"
           >
-            <label htmlFor="home-console-input" className="text-gray-400 mr-2"></label>
-            <input
-              type="text"
-              id="home-console-input"
-              className="bg-gray-700 text-white flex-grow rounded-md p-2 text-sm focus:outline-none"
-              value={consoleInput}
-              onChange={handleConsoleInputChange}
-              onKeyDown={(e) => e.key === 'Enter' && executeCommand()}
-            />
-            {consoleOutput && <div className="ml-2 text-green-400 text-sm">{consoleOutput}</div>}
-            <button onClick={executeCommand} className="bg-indigo-600 text-white rounded-md p-2 ml-2 text-sm">
-              Execute
-            </button>
+            <div className="console-output mb-2 max-h-[60vh] overflow-y-auto text-green-400 text-sm">
+              {consoleOutput.length === 0 && (
+                <div className="text-green-600">Type 'help' for available commands.</div>
+              )}
+              {consoleOutput.slice(-5).map((line, index) => (
+                <div key={index}>
+                  {line.split('\n').map((paragraph, i) => (
+                    <div key={i}>{paragraph || <br />}</div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center">
+              <span className="text-green-500 mr-2">$</span>
+              <input
+                type="text"
+                className="console-input flex-grow bg-gray-800 text-green-400 p-2 focus:outline-none border-b border-green-500"
+                value={consoleInput}
+                onChange={handleConsoleInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Enter command..."
+              />
+              <button 
+                onClick={executeCommand} 
+                className="console-button ml-2 px-3 py-1 border border-green-500 hover:bg-green-900/30 text-sm"
+              >
+                RUN
+              </button>
+            </div>
           </motion.div>
         )}
       </div>
