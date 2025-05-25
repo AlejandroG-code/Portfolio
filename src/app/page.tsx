@@ -16,7 +16,7 @@ const consolePages = {
   
   Name: Alejandro Gonzalez
   Role: Systems Engineering Student & Aspiring Full Stack Developer
-  Location: Michoacán, México
+  Location: Michoacan, Mexico
   
   EDUCATION
   ---------
@@ -150,7 +150,7 @@ export default function Home() {
 
 
 
-    
+
     // Add to history
     setCommandHistory(prev => [...prev, command]);
     setHistoryIndex(-1);
@@ -203,7 +203,7 @@ export default function Home() {
           {/* Área de terminal ampliada */}
           <div className="console-output h-[70vh] mb-6 overflow-y-auto border-2 border-green-600 p-4 rounded-lg bg-black/90">
           {consoleOutput.length === 0 && (
-              <div className="text-green-500 text-lg">Type 'help' to see available commands.</div>
+              <div className="text-green-500 text-lg">Type &apos;help&apos; to see available commands.</div>
             )}
             {consoleOutput.map((line, index) => (
               <div key={index} className="mb-2 text-lg">
@@ -286,7 +286,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            Hi, I'm <span className="text-indigo-400">Alejandro</span>
+            Hi, I&apos;m <span className="text-indigo-400">Alejandro</span>
           </motion.h1>
 
           <motion.p
@@ -407,7 +407,7 @@ export default function Home() {
           >
             <div className="console-output mb-2 max-h-[60vh] overflow-y-auto text-green-400 text-sm">
               {consoleOutput.length === 0 && (
-                <div className="text-green-600">Type 'help' for available commands.</div>
+                <div className="text-green-600">Type &apos;help&apos; for available commands.</div>
               )}
               {consoleOutput.slice(-5).map((line, index) => (
                 <div key={index}>
