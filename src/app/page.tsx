@@ -4,12 +4,59 @@
 import { motion } from 'framer-motion';
 import Navbar from './_components/navbar/navbar';
 import Image from 'next/image';
-import Background from './_components/background/background'; // Importa el componente de fondo
+import Background from './_components/background/background'; // Import the background component
+import React, { useState, useCallback, useEffect } from 'react';
+import { getCookie, setCookie, deleteCookie } from 'cookies-next'; // Import functions for client-side cookies
 
 export default function Home() {
+  const [isNostalgiaMode, setIsNostalgiaMode] = useState(false);
+  const [isConsoleVisible, setIsConsoleVisible] = useState(false);
+  const [consoleInput, setConsoleInput] = useState('');
+  const [inspirationListVisible, setInspirationListVisible] = useState(false);
+  const [consoleOutput, setConsoleOutput] = useState('');
+  // Initialize nostalgia mode from cookie on component mount
+  useEffect(() => {
+    const nostalgiaCookie = getCookie('nostalgia');
+    if (nostalgiaCookie === 'true') {
+      setIsNostalgiaMode(true);
+    }
+  }, []);
+
+  const toggleConsole = () => {
+    setIsConsoleVisible(!isConsoleVisible);
+    setConsoleInput(''); // Clear input on open/close
+    setConsoleOutput(''); // Clear output on open/close
+  };
+
+  const handleConsoleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setConsoleInput(event.target.value);
+  };
+
+  const executeCommand = () => {
+    const command = consoleInput.trim().toLowerCase();
+    setConsoleInput(''); // Clear input after execution
+    switch (command) {
+      case 'nostalgia':
+        const newNostalgiaState = !isNostalgiaMode;
+        setIsNostalgiaMode(newNostalgiaState);
+        setCookie('nostalgia', newNostalgiaState.toString(), { path: '/' });
+        setConsoleOutput(`Nostalgia mode ${newNostalgiaState ? 'on' : 'off'}.`);
+        break;
+      case 'inspire':
+        setInspirationListVisible(!inspirationListVisible);
+        setConsoleOutput(`Inspiration list toggled ${!inspirationListVisible ? 'visible' : 'hidden'}.`);
+        break;
+      case 'help':
+        setConsoleOutput('Available commands: nostalgia, inspire');
+        break;
+      default:
+        setConsoleOutput(`Unknown command: ${command}. Type 'help' for available commands.`);
+    }
+  };
+
   return (
-    <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
-      <Background /> {/* Renderiza el componente de fondo */}
+    <div className={`relative min-h-screen bg-gray-950 text-white overflow-hidden ${isNostalgiaMode ? 'nostalgia-mode' : ''}`}>
+      <Background /> {/* Render the background component */}
 
       {/* Overlay content */}
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -141,6 +188,72 @@ export default function Home() {
             <p className="mt-1 text-xs text-gray-600">Made with passion</p>
           </div>
         </footer>
+
+        {/* Inspiration List Section (conditionally visible) */}
+        {inspirationListVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-20 left-4 right-4 bg-gray-800 rounded-md p-6 z-50 shadow-lg border border-gray-700"
+          >
+            <h2 className="text-lg font-semibold text-gray-300 mb-4">Things That Inspire Me</h2>
+            <button onClick={() => setInspirationListVisible(false)} className="absolute top-2 right-2 text-gray-500 hover:text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div>
+              <h3 className="text-md text-gray-400 mb-2">Books</h3>
+              <ul>
+                <li>The Little Prince</li>
+                <li>One Hundred Years of Solitude</li>
+                {/* ... more books ... */}
+              </ul>
+              <h3 className="text-md text-gray-400 mt-4 mb-2">Music</h3>
+              <ul>
+                <li>Lo-fi hip hop</li>
+                <li>Indie rock</li>
+                {/* ... more music ... */}
+              </ul>
+              {/* ... more categories ... */}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Console Button */}
+        <div className="fixed bottom-4 right-4 z-50">
+          <button onClick={toggleConsole} className="group relative border border-indigo-500 hover:border-indigo-400 text-indigo-300 hover:text-white font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10 text-sm">
+            <span className="relative z-10">{isConsoleVisible ? 'Close Console' : 'Open Console'}</span>
+            <span className="absolute inset-0 bg-indigo-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+          </button>
+        </div>
+
+        {/* Console Interface (conditionally visible) */}
+        {isConsoleVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-0 left-0 w-full bg-gray-800 p-4 border-t border-gray-700 flex items-center z-50"
+          >
+            <label htmlFor="home-console-input" className="text-gray-400 mr-2"></label>
+            <input
+              type="text"
+              id="home-console-input"
+              className="bg-gray-700 text-white flex-grow rounded-md p-2 text-sm focus:outline-none"
+              value={consoleInput}
+              onChange={handleConsoleInputChange}
+              onKeyDown={(e) => e.key === 'Enter' && executeCommand()}
+            />
+            {consoleOutput && <div className="ml-2 text-green-400 text-sm">{consoleOutput}</div>}
+            <button onClick={executeCommand} className="bg-indigo-600 text-white rounded-md p-2 ml-2 text-sm">
+              Execute
+            </button>
+          </motion.div>
+        )}
       </div>
     </div>
   );

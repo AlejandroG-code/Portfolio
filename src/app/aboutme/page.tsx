@@ -99,6 +99,10 @@ export default function AboutMe() {
                           <span className="text-indigo-400 mr-2">•</span>
                           <span className="text-gray-300"><strong className="text-white">Soft Skills:</strong> Fast Learner, Responsible, Sociable, Team Player, Self-taught</span>
                       </li>
+                        <li className="flex items-start">
+                          <span className="text-indigo-400 mr-2">•</span>
+                          <span className="text-gray-300"><strong className="text-white">Languages:</strong> Spanish (Native), English (C1), German (B1), Italian (A2), French (A2)</span>
+                        </li>
                     </ul>
                   </motion.div>
 
