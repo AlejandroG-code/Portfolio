@@ -30,7 +30,7 @@ const consolePages = {
   • Languages: Spanish (Native), English (C1), German (B1), Italian (A2), French (A2)
   
   EXPERIENCE
-  ----------
+  ----------Y 
   • Programming Instructor: Taught basic Java and Python to university students.
   • Team Leader & Mentor: Guided students in programming and data systems projects.
   • Project Developer: Developed stock analysis tool and personal portfolio website.
