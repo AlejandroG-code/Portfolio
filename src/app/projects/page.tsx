@@ -89,11 +89,14 @@ export default function Projects() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
+    // ¡CAMBIO CLAVE AQUÍ! Se eliminó 'overflow-hidden' del div principal.
+    // Esto permite que el body maneje el scroll, haciendo que el Navbar se pegue.
+    <div className="relative min-h-screen bg-gray-950 text-white"> {/* Eliminado overflow-hidden */}
       <Background /> {/* Renderiza el componente Background aquí */}
       <>
         <Navbar />
-        <section className="py-20 px-4 min-h-screen relative z-10"> {/* Añadí z-10 para que el contenido esté sobre el fondo */}
+        {/* Aseguramos que la sección de contenido tenga suficiente altura para forzar el scroll */}
+        <section className="py-20 px-4 relative z-10 min-h-[150vh]"> {/* Añadí min-h-[150vh] */}
           <div className="max-w-7xl mx-auto">
             {/* Header with animation */}
             <motion.div
