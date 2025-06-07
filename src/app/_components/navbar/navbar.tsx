@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import Image from "next/image";
@@ -9,8 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Eliminado el enlace a "Home" de esta lista
   const navLinks = [
-    { href: "/", label: "Home" },
     { href: "/aboutme", label: "About Me" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
@@ -52,20 +52,21 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-950 border-b border-gray-800 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
+        {/* Logo/Nombre - Es el Link a Home */}
+        <Link href="/" className="flex items-center gap-2 group">
           <Image
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
             alt="Logo"
             width={32}
             height={32}
+            className="group-hover:opacity-80 transition-opacity"
           />
-          <span className="text-xl font-semibold text-white tracking-wide">
+          <span className="text-xl font-semibold text-white tracking-wide group-hover:text-indigo-400 transition-colors">
             Alejandro
           </span>
-        </div>
+        </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav - Ahora sin el enlace a Home */}
         <div className="hidden md:flex gap-6 text-white">
           {navLinks.map(({ href, label }) => (
             <Link
@@ -97,7 +98,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu Content */}
+      {/* Mobile Menu Content - Ahora sin el enlace a Home */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

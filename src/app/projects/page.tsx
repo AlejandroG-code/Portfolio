@@ -110,7 +110,7 @@ export default function Projects() {
                   My Projects
                 </span>
               </h1>
-              <p className="text-gray-400 max-w-2xl mx-auto">
+              <p className="text-gray-400 max-w-2xl mx-auto text-lg">
                 Click on a project to see details if available.
               </p>
             </motion.div>
@@ -136,7 +136,7 @@ export default function Projects() {
                     <h3 className="text-xl font-semibold text-gray-300 mb-2">
                       {projectExists(project) ? project.name : "Project in Progress"}
                     </h3>
-                    <p className="text-gray-500 mb-4 line-clamp-2">
+                    <p className="text-gray-500 mb-4 line-clamp-2 text-lg "> {/* Change here for text lenght*/} 
                       {projectExists(project) ? project.description : "Exciting work coming soon!"}
                     </p>
                     <div className="flex flex-wrap justify-center gap-2">
@@ -194,7 +194,7 @@ export default function Projects() {
                   </div>
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-300 mb-2">Description</h3>
-                    <p className="text-gray-400">{selectedProject.description}</p>
+                    <p className="text-gray-400 text-lg">{selectedProject.description}</p>
                   </div>
                   {selectedProject.githubUrl && (
                     <div className="mt-6">
