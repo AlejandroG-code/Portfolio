@@ -8,11 +8,47 @@ import Background from '../_components/background/background'; // Import Backgro
 
 export default function ContactPage() {
   const [copied, setCopied] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ // Estado para los datos del formulario
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false); // Estado para controlar si el formulario se envió
+  const [submitMessage, setSubmitMessage] = useState(''); // Mensaje de éxito/error
 
   const copyToClipboard = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
     setCopied(type);
     setTimeout(() => setCopied(null), 2000);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Previene el envío por defecto del formulario
+
+    const { name, email, subject, message } = formData;
+    const recipientEmail = "alejandro.g.engineer@gmail.com";
+    const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+
+    try {
+      window.location.href = mailtoLink; // Abre el cliente de correo
+      setFormSubmitted(true);
+      setSubmitMessage("¡Gracias! Tu cliente de correo se ha abierto con el mensaje pre-llenado.");
+      setFormData({ // Limpia el formulario después de "enviar"
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+      });
+    } catch (error) {
+      setSubmitMessage("Hubo un problema al abrir el cliente de correo. Por favor, copia la información manualmente.");
+      console.error("Error al abrir mailto:", error);
+    }
   };
 
   const contacts = [
@@ -79,16 +115,11 @@ export default function ContactPage() {
   ];
 
   return (
-    // ¡CAMBIO CLAVE AQUÍ! Se eliminó 'overflow-hidden' del div principal.
-    // Esto permite que el body maneje el scroll, haciendo que el Navbar se pegue.
     <div className="relative min-h-screen bg-gray-950 text-white">
-      <Background /> {/* Renderiza el componente Background aquí */}
+      <Background />
       <>
         <Navbar />
-        {/* Agregamos un div con una altura mínima para asegurar que haya scroll
-            y el Navbar se pueda pegar. Puedes ajustar o quitar este min-h
-            si tu contenido ya es suficiente. */}
-        <section className="py-20 px-4 relative z-10 min-h-[150vh]">
+        <section className="py-20 px-4 relative z-10"> {/* Eliminado min-h-[150vh] si no es necesario */}
           <div className="max-w-4xl mx-auto">
             {/* Header */}
             <motion.div
@@ -139,7 +170,7 @@ export default function ContactPage() {
               ))}
             </div>
 
-            {/* Contact Form Placeholder */}
+            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -148,20 +179,86 @@ export default function ContactPage() {
             >
               <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
                 <span className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
-                Mesage Me
+                Message Me
               </h2>
               <p className="text-gray-400 mb-6">
-                I am currently working on a contact form. In the meantime, feel free to reach out through the channels above.
+                Fill out the form below and I'll get back to you as soon as possible!
               </p>
-              <div className="space-y-4 opacity-50 pointer-events-none">
+
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-gray-800 h-12 rounded-lg"></div>
-                  <div className="bg-gray-800 h-12 rounded-lg"></div>
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Your Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="John Doe"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Your Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="john.doe@example.com"
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="bg-gray-800 h-12 rounded-lg"></div>
-                <div className="bg-gray-800 h-32 rounded-lg"></div>
-                <div className="bg-indigo-600/30 h-12 rounded-lg"></div>
-              </div>
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">Subject</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Regarding a project..."
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">Your Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={6}
+                    className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y"
+                    placeholder="Hi Alejandro, I'd like to discuss..."
+                    required
+                  ></textarea>
+                </div>
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+                >
+                  Send Message
+                </motion.button>
+              </form>
+
+              {formSubmitted && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 text-center text-green-400"
+                >
+                  {submitMessage}
+                </motion.p>
+              )}
             </motion.div>
           </div>
         </section>
