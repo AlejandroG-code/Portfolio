@@ -182,7 +182,7 @@ export default function ContactPage() {
                 Message Me
               </h2>
               <p className="text-gray-400 mb-6">
-                Fill out the form below and I'll get back to you as soon as possible!
+                Fill out the form below and I&#39;ll get back to you as soon as possible!
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
