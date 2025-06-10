@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import Navbar from "../_components/navbar/navbar";
-import { motion } from 'framer-motion';
-import Link from 'next/link'; // Import Link for navigation
-import Background from '../_components/background/background'; // Import Background component
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import Background from '../_components/background/background';
 
-// Sample project data
 const projectData = [
   {
     id: 1,
@@ -15,6 +14,12 @@ const projectData = [
     description: "My personal portfolio website showcasing my skills and projects.",
     creationDate: "2025-07-19",
     githubUrl: "https://github.com/AlejandroG-code/Portfolio",
+    images: [
+      "/Images/portfolio-1.png",
+      "/Images/portfolio-2.png",
+      "/Images/portfolio-3.png",
+      "/Images/portfolio-4.png",
+    ],
   },
   {
     id: 2,
@@ -23,6 +28,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    images: [],
   },
   {
     id: 3,
@@ -31,6 +37,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    images: [],
   },
   {
     id: 4,
@@ -39,6 +46,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    images: [],
   },
   {
     id: 5,
@@ -47,6 +55,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    images: [],
   },
   {
     id: 6,
@@ -55,12 +64,14 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    images: [],
   }
 ];
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<(typeof projectData)[number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Nuevo estado para la imagen actual
 
   interface Project {
     id: number;
@@ -69,6 +80,7 @@ export default function Projects() {
     description: string;
     creationDate: string;
     githubUrl: string | null;
+    images: string[]; // Añade 'images' a la interfaz
   }
 
   const projectExists = (project: Project): boolean => {
@@ -79,6 +91,7 @@ export default function Projects() {
     const project = projectData.find((p) => p.id === projectId);
     if (projectExists(project!)) {
       setSelectedProject(project || null);
+      setCurrentImageIndex(0); // Reinicia el índice de la imagen al abrir el modal
       setIsModalOpen(true);
     }
   };
@@ -88,17 +101,29 @@ export default function Projects() {
     setSelectedProject(null);
   };
 
+  const goToNextImage = () => {
+    if (selectedProject?.images) {
+      setCurrentImageIndex((prevIndex) =>
+        (prevIndex + 1) % selectedProject.images.length
+      );
+    }
+  };
+
+  const goToPreviousImage = () => {
+    if (selectedProject?.images) {
+      setCurrentImageIndex((prevIndex) =>
+        (prevIndex - 1 + selectedProject.images.length) % selectedProject.images.length
+      );
+    }
+  };
+
   return (
-    // ¡CAMBIO CLAVE AQUÍ! Se eliminó 'overflow-hidden' del div principal.
-    // Esto permite que el body maneje el scroll, haciendo que el Navbar se pegue.
-    <div className="relative min-h-screen bg-gray-950 text-white"> {/* Eliminado overflow-hidden */}
-      <Background /> {/* Renderiza el componente Background aquí */}
+    <div className="relative min-h-screen bg-gray-950 text-white">
+      <Background />
       <>
         <Navbar />
-        {/* Aseguramos que la sección de contenido tenga suficiente altura para forzar el scroll */}
-        <section className="py-20 px-4 relative z-10 min-h-[150vh]"> {/* Añadí min-h-[150vh] */}
+        <section className="py-20 px-4 relative z-10 min-h-[150vh]">
           <div className="max-w-7xl mx-auto">
-            {/* Header with animation */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -115,7 +140,6 @@ export default function Projects() {
               </p>
             </motion.div>
 
-            {/* Projects Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projectData.map((project, index) => (
                 <motion.div
@@ -136,7 +160,7 @@ export default function Projects() {
                     <h3 className="text-xl font-semibold text-gray-300 mb-2">
                       {projectExists(project) ? project.name : "Project in Progress"}
                     </h3>
-                    <p className="text-gray-500 mb-4 line-clamp-2 text-lg "> {/* Change here for text lenght*/} 
+                    <p className="text-gray-500 mb-4 line-clamp-2 text-lg ">
                       {projectExists(project) ? project.description : "Exciting work coming soon!"}
                     </p>
                     <div className="flex flex-wrap justify-center gap-2">
@@ -161,53 +185,102 @@ export default function Projects() {
             </div>
 
             {/* Project Modal */}
-            {isModalOpen && selectedProject && projectExists(selectedProject) && (
-              <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center">
+            <AnimatePresence> {/* Envuelve el modal con AnimatePresence */}
+              {isModalOpen && selectedProject && projectExists(selectedProject) && (
                 <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.8, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                  className="bg-gray-800 rounded-xl p-8 max-w-lg w-full relative">
-                  <button onClick={closeModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                  <h2 className="text-2xl font-bold text-gray-100 mb-4">{selectedProject.name}</h2>
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-300 mb-2">Tags</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProject.tags
-                        .filter(tag => !tag.startsWith("Exists ="))
-                        .map((tag) => (
-                          <span key={tag} className="inline-block bg-indigo-700/30 text-indigo-400 text-xs font-medium px-3 py-1 rounded-full">
-                            {tag}
-                          </span>
-                        ))}
-                      {selectedProject.creationDate && (
-                        <span className="inline-block bg-gray-700/30 text-gray-400 text-xs font-medium px-3 py-1 rounded-full">
-                          Created: {new Date(selectedProject.creationDate).toLocaleDateString()}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-300 mb-2">Description</h3>
-                    <p className="text-gray-400 text-lg">{selectedProject.description}</p>
-                  </div>
-                  {selectedProject.githubUrl && (
-                    <div className="mt-6">
-                      <Link href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300">
-                        View on GitHub
-                      </Link>
-                    </div>
-                  )}
-                </motion.div>
-              </div>
-            )}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center p-4" // Añadido p-4 para padding en móviles
+                >
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                    className="bg-gray-800 rounded-xl p-8 max-w-2xl w-full relative overflow-y-auto max-h-[90vh]" // Aumentado max-w-lg a max-w-2xl, añadido overflow-y-auto y max-h-[90vh]
+                  >
+                    <button onClick={closeModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    <h2 className="text-2xl font-bold text-gray-100 mb-4">{selectedProject.name}</h2>
 
-            {/* Call to Action */}
+                    {/* Galería de Imágenes */}
+                    {selectedProject.images && selectedProject.images.length > 0 && (
+                      <div className="mb-6 relative">
+                        <motion.img
+                          key={currentImageIndex} // Key para forzar la re-renderización y animación
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.5 }}
+                          src={selectedProject.images[currentImageIndex]}
+                          alt={`${selectedProject.name} image ${currentImageIndex + 1}`}
+                          className="w-full h-auto rounded-lg object-cover max-h-80" // max-h-80 para controlar la altura
+                        />
+                        {selectedProject.images.length > 1 && (
+                          <>
+                            <button
+                              onClick={goToPreviousImage}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full z-10"
+                            >
+                              &#8592;
+                            </button>
+                            <button
+                              onClick={goToNextImage}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full z-10"
+                            >
+                              &#8594;
+                            </button>
+                            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
+                              {selectedProject.images.map((_, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => setCurrentImageIndex(index)}
+                                  className={`w-3 h-3 rounded-full ${index === currentImageIndex ? 'bg-indigo-400' : 'bg-gray-400'} border border-white`}
+                                ></button>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                    {/* Fin de Galería de Imágenes */}
+
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-gray-300 mb-2">Tags</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedProject.tags
+                          .filter(tag => !tag.startsWith("Exists ="))
+                          .map((tag) => (
+                            <span key={tag} className="inline-block bg-indigo-700/30 text-indigo-400 text-xs font-medium px-3 py-1 rounded-full">
+                              {tag}
+                            </span>
+                          ))}
+                        {selectedProject.creationDate && (
+                          <span className="inline-block bg-gray-700/30 text-gray-400 text-xs font-medium px-3 py-1 rounded-full">
+                            Created: {new Date(selectedProject.creationDate).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-gray-300 mb-2">Description</h3>
+                      <p className="text-gray-400 text-lg">{selectedProject.description}</p>
+                    </div>
+                    {selectedProject.githubUrl && (
+                      <div className="mt-6">
+                        <Link href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300">
+                          View on GitHub
+                        </Link>
+                      </div>
+                    )}
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
