@@ -12,8 +12,9 @@ const projectData = [
     name: "My Portfolio",
     tags: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "TypeScript", "Exists = True"],
     description: "My personal portfolio website showcasing my skills and projects.",
-    creationDate: "2025-07-19",
+    creationDate: "2025-05-19",
     githubUrl: "https://github.com/AlejandroG-code/Portfolio",
+    websiteUrl: "https://portfolio-cyan-psi-72.vercel.app/", // ¡NUEVO CAMPO! Reemplaza con tu URL real
     images: [
       "/Images/portfolio-1.png",
       "/Images/portfolio-2.png",
@@ -23,12 +24,20 @@ const projectData = [
   },
   {
     id: 2,
-    name: "Coming soon Project",
-    tags: [],
-    description: "Exciting work coming soon!",
-    creationDate: "",
-    githubUrl: null,
-    images: [],
+    name: "Developer Path Web",
+    tags: ["React", "Next.js", "Tailwind CSS", "CSS", "TypeScript", "Exists = True"],
+    description: "A web application to help developers track their learning path and progress.",
+    creationDate: "2025-06-15",
+    githubUrl: "https://github.com/AlejandroG-code/DevPathPgae.git",
+    websiteUrl: "https://dev-path-page.vercel.app/", // ¡NUEVO CAMPO! Reemplaza con tu URL real
+    images: [
+      "/Images/DevPath1.jpeg",
+      "/Images/DevPath2.jpeg",
+      "/Images/DevPath3.jpeg",
+      "/Images/DevPath4.jpeg",
+      "/Images/DevPath5.jpeg",
+      "/Images/DevPath6.jpeg",
+    ],
   },
   {
     id: 3,
@@ -37,6 +46,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    websiteUrl: null, // ¡NUEVO CAMPO!
     images: [],
   },
   {
@@ -46,6 +56,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    websiteUrl: null, // ¡NUEVO CAMPO!
     images: [],
   },
   {
@@ -55,6 +66,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    websiteUrl: null, // ¡NUEVO CAMPO!
     images: [],
   },
   {
@@ -64,6 +76,7 @@ const projectData = [
     description: "Exciting work coming soon!",
     creationDate: "",
     githubUrl: null,
+    websiteUrl: null, // ¡NUEVO CAMPO!
     images: [],
   }
 ];
@@ -71,7 +84,7 @@ const projectData = [
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<(typeof projectData)[number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Nuevo estado para la imagen actual
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   interface Project {
     id: number;
@@ -80,7 +93,8 @@ export default function Projects() {
     description: string;
     creationDate: string;
     githubUrl: string | null;
-    images: string[]; // Añade 'images' a la interfaz
+    websiteUrl: string | null; // <--- ¡Añadido aquí!
+    images: string[];
   }
 
   const projectExists = (project: Project): boolean => {
@@ -89,9 +103,9 @@ export default function Projects() {
 
   const openModal = (projectId: Project['id']): void => {
     const project = projectData.find((p) => p.id === projectId);
-    if (projectExists(project!)) {
-      setSelectedProject(project || null);
-      setCurrentImageIndex(0); // Reinicia el índice de la imagen al abrir el modal
+    if (project && projectExists(project)) { // Asegurarse de que project no sea undefined
+      setSelectedProject(project);
+      setCurrentImageIndex(0);
       setIsModalOpen(true);
     }
   };
@@ -149,7 +163,7 @@ export default function Projects() {
                   transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
                   whileHover={{ scale: 1.03 }}
                   className={`group relative overflow-hidden rounded-xl border-2 border-dashed border-gray-700 hover:border-indigo-500/50 transition-all duration-300 min-h-[300px] flex flex-col items-center justify-center ${projectExists(project) ? 'cursor-pointer' : ''}`}
-                  onClick={() => projectExists(project) ? openModal(project.id) : {}}
+                  onClick={() => projectExists(project) ? openModal(project.id) : undefined} // Usar undefined en lugar de {}
                 >
                   <div className="text-center p-8">
                     <div className="mx-auto mb-6 flex items-center justify-center w-16 h-16 bg-indigo-900/30 rounded-full border border-indigo-500/30">
@@ -185,20 +199,20 @@ export default function Projects() {
             </div>
 
             {/* Project Modal */}
-            <AnimatePresence> {/* Envuelve el modal con AnimatePresence */}
+            <AnimatePresence>
               {isModalOpen && selectedProject && projectExists(selectedProject) && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center p-4" // Añadido p-4 para padding en móviles
+                  className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex items-center justify-center p-4"
                 >
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.8, opacity: 0 }}
                     transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                    className="bg-gray-800 rounded-xl p-8 max-w-2xl w-full relative overflow-y-auto max-h-[90vh]" // Aumentado max-w-lg a max-w-2xl, añadido overflow-y-auto y max-h-[90vh]
+                    className="bg-gray-800 rounded-xl p-8 max-w-2xl w-full relative overflow-y-auto max-h-[90vh]"
                   >
                     <button onClick={closeModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-300">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -211,13 +225,13 @@ export default function Projects() {
                     {selectedProject.images && selectedProject.images.length > 0 && (
                       <div className="mb-6 relative">
                         <motion.img
-                          key={currentImageIndex} // Key para forzar la re-renderización y animación
+                          key={currentImageIndex}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.5 }}
                           src={selectedProject.images[currentImageIndex]}
                           alt={`${selectedProject.name} image ${currentImageIndex + 1}`}
-                          className="w-full h-auto rounded-lg object-cover max-h-80" // max-h-80 para controlar la altura
+                          className="w-full h-auto rounded-lg object-cover max-h-80"
                         />
                         {selectedProject.images.length > 1 && (
                           <>
@@ -269,13 +283,18 @@ export default function Projects() {
                       <h3 className="text-lg font-semibold text-gray-300 mb-2">Description</h3>
                       <p className="text-gray-400 text-lg">{selectedProject.description}</p>
                     </div>
-                    {selectedProject.githubUrl && (
-                      <div className="mt-6">
+                    <div className="mt-6 flex flex-wrap gap-4"> {/* Añadido flex-wrap y gap para los botones */}
+                      {selectedProject.githubUrl && (
                         <Link href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300">
                           View on GitHub
                         </Link>
-                      </div>
-                    )}
+                      )}
+                      {selectedProject.websiteUrl && ( // <--- ¡NUEVO BOTÓN AQUI!
+                        <Link href={selectedProject.websiteUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300">
+                          Visit Website
+                        </Link>
+                      )}
+                    </div>
                   </motion.div>
                 </motion.div>
               )}
