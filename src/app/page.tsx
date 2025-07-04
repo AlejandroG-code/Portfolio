@@ -9,17 +9,6 @@ import React from 'react'; // Mantener solo si usas useState/useEffect para otra
 
 
 export default function Home() {
-  // Se eliminan todos los estados relacionados con la consola
-  // const [isConsoleMode, setIsConsoleMode] = useState(false);
-  // const [isConsoleVisible, setIsConsoleVisible] = useState(false);
-  // const [consoleInput, setConsoleInput] = useState('');
-  // const [consoleOutput, setConsoleOutput] = useState<string[]>([]);
-  // const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  // const [historyIndex, setHistoryIndex] = useState(-1);
-
-  // Se eliminan los useEffect, addOutput, toggleConsole, handleConsoleInputChange, handleKeyDown, executeCommand
-  // ya que son específicos de la consola.
-  // Si tienes otros useEffect o useState que no sean de la consola, déjalos.
 
   return (
     <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
