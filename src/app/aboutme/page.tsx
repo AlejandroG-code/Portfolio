@@ -23,14 +23,19 @@ export default function AboutMe() {
               transition={{ duration: 0.6 }}
             >
               <div className="relative group">
+                <motion.div 
+                  className="absolute -inset-2 bg-gradient-to-r from-indigo-500/50 to-pink-500/50 rounded-full blur-3xl opacity-0"
+                  animate={{ opacity: [0, 0.6, 0.2, 0.8, 0.4, 0], scale: [1, 1.1, 1] }}
+                  transition={{ duration: 6, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+                />
                 <Image
                   src="/yo.jpg"
                   alt="Alejandro Gonzalez"
                   width={380} // Aumentado ligeramente el tamaño de la imagen, ya que ocupará más espacio central
                   height={380}
-                  className="rounded-full shadow-xl object-cover border-4 border-indigo-500/20 group-hover:border-indigo-500/40 transition-all duration-300" // Cambiado a rounded-full para forma circular
+                  className="relative z-10 rounded-full shadow-xl object-cover border-4 border-indigo-500/20 group-hover:border-indigo-500/40 transition-all duration-300" // Cambiado a rounded-full para forma circular
                 />
-                <div className="absolute inset-0 bg-indigo-600/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-indigo-600/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
               </div>
             </motion.div>
 
@@ -41,9 +46,16 @@ export default function AboutMe() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
-                Hello, I&#39;m <span className="text-white">Alejandro Gonzalez</span>
-              </h1>
+              <div className="inline-block relative">
+                <motion.div 
+                  className="absolute -inset-2 bg-gradient-to-r from-indigo-500/50 to-purple-500/50 rounded-full blur-3xl opacity-0"
+                  animate={{ opacity: [0, 0.7, 0.3, 1, 0.5, 0], scale: [1, 1.2, 1] }}
+                  transition={{ duration: 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut", delay: 1 }}
+                />
+                <h1 className="relative text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
+                  Hello, I&#39;m <span className="text-white">Alejandro Gonzalez</span>
+                </h1>
+              </div>
               <div className="h-1 w-24 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mx-auto mb-6"></div> {/* mx-auto para centrar la línea */}
               <p className="text-lg sm:text-xl text-gray-400 italic">
                 Systems Engineering Student | Passionate Developer | Tech Enthusiast
@@ -56,7 +68,7 @@ export default function AboutMe() {
 
               {/* About Me - Ocupa todo el ancho en md y lg (3 columnas) */}
               <motion.div
-                className="md:col-span-2 lg:col-span-3 bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                className="md:col-span-2 lg:col-span-3 bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
@@ -72,7 +84,7 @@ export default function AboutMe() {
 
               {/* Skills */}
               <motion.div
-                className="bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                className="bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
@@ -100,14 +112,14 @@ export default function AboutMe() {
                   </li>
                     <li className="flex items-start">
                       <span className="text-indigo-400 mr-2 mt-1">•</span>
-                      <span className="text-lg text-gray-300"><strong className="text-white">Languages:</strong> Spanish (Native), English (C1), German (B1), Italian (A2), French (A2)</span>
+                      <span className="text-lg text-gray-300"><strong className="text-white">Languages:</strong> Spanish (Native), English (C1), German (B1)</span>
                     </li>
                 </ul>
               </motion.div>
 
               {/* Experience */}
               <motion.div
-                className="bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                className="bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
@@ -141,7 +153,7 @@ export default function AboutMe() {
 
               {/* Contact */}
               <motion.div
-                className="bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                className="bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
@@ -178,7 +190,7 @@ export default function AboutMe() {
 
               {/* Achievements - Ahora ocupa todo el ancho en md y lg (3 columnas) */}
               <motion.div
-                className="md:col-span-2 lg:col-span-3 bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                className="md:col-span-2 lg:col-span-3 bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7, duration: 0.6 }}
@@ -211,7 +223,7 @@ export default function AboutMe() {
 
               {/* Goals - Ahora ocupa todo el ancho en md y lg (3 columnas) */}
               <motion.div
-                className="md:col-span-2 lg:col-span-3 bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                className="md:col-span-2 lg:col-span-3 bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md p-8 rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 shadow-lg hover:shadow-indigo-500/20"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7, duration: 0.6 }}

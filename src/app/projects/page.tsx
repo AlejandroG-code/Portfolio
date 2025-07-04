@@ -144,11 +144,23 @@ export default function Projects() {
               transition={{ duration: 0.6 }}
               className="mb-16 text-center"
             >
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
-                  My Projects
-                </span>
-              </h1>
+              <motion.div
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="inline-block relative"
+              >
+                <motion.div 
+                  className="absolute -inset-2 bg-gradient-to-r from-indigo-500/50 to-purple-500/50 rounded-full blur-3xl opacity-0"
+                  animate={{ opacity: [0, 0.7, 0.3, 1, 0.5, 0], scale: [1, 1.2, 1] }}
+                  transition={{ duration: 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+                />
+                <h1 className="text-4xl sm:text-5xl font-bold mb-4 relative">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                    My Projects
+                  </span>
+                </h1>
+              </motion.div>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
                 Click on a project to see details if available.
               </p>
@@ -161,20 +173,22 @@ export default function Projects() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
-                  whileHover={{ scale: 1.03 }}
-                  className={`group relative overflow-hidden rounded-xl border-2 border-dashed border-gray-700 hover:border-indigo-500/50 transition-all duration-300 min-h-[300px] flex flex-col items-center justify-center ${projectExists(project) ? 'cursor-pointer' : ''}`}
-                  onClick={() => projectExists(project) ? openModal(project.id) : undefined} // Usar undefined en lugar de {}
+                  whileHover={{ scale: 1.03, y: -8 }}
+                  className={`group relative overflow-hidden rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 min-h-[300px] flex flex-col items-center justify-center bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md shadow-lg hover:shadow-indigo-500/30 ${projectExists(project) ? 'cursor-pointer' : ''}`}
+                  onClick={() => projectExists(project) ? openModal(project.id) : undefined}
                 >
-                  <div className="text-center p-8">
-                    <div className="mx-auto mb-6 flex items-center justify-center w-16 h-16 bg-indigo-900/30 rounded-full border border-indigo-500/30">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative z-10 text-center p-8">
+                    <div className="mx-auto mb-6 flex items-center justify-center w-16 h-16 bg-indigo-900/30 rounded-full border border-indigo-500/30 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-300 mb-2">
+                    <h3 className="text-xl font-semibold text-gray-200 group-hover:text-white mb-2 transition-colors duration-300">
                       {projectExists(project) ? project.name : "Project in Progress"}
                     </h3>
-                    <p className="text-gray-500 mb-4 line-clamp-2 text-lg ">
+                    <p className="text-gray-500 group-hover:text-gray-400 mb-4 line-clamp-2 text-lg transition-colors duration-300">
                       {projectExists(project) ? project.description : "Exciting work coming soon!"}
                     </p>
                     <div className="flex flex-wrap justify-center gap-2">

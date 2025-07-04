@@ -10,15 +10,18 @@ interface Particle {
   alpha: number;
   vx: number;
   vy: number;
+  hue: number;
 }
 
-const numberOfParticles = 50;
-const initialVelocity = 0.5;
-const fadeSpeed = 0.005;
+const numberOfParticles = 25; // Reduced from 50
+const initialVelocity = 0.3; // Reduced from 0.5
+const fadeSpeed = 0.006; // Slightly decreased for longer particle life
 
 export default function Background() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
+  const animationIdRef = useRef<number>(0);
+  const lastTimeRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,10 +30,23 @@ export default function Background() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
+    // Performance optimizations
+    ctx.imageSmoothingEnabled = false;
+    
+    const updateCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // Limit DPR for performance
+      
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      
+      ctx.scale(dpr, dpr);
+      return { width: rect.width, height: rect.height };
+    };
+
+    const { width, height } = updateCanvasSize();
 
     const initializeParticles = () => {
       particlesRef.current = [];
@@ -39,115 +55,95 @@ export default function Background() {
         particlesRef.current.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          size: Math.random() * 2 + 1,
-          alpha: Math.random(),
-          vx: Math.cos(angle) * initialVelocity * Math.random(),
-          vy: Math.sin(angle) * initialVelocity * Math.random(),
+          size: Math.random() * 1.5 + 0.5, // Smaller particles
+          alpha: Math.random() * 0.8 + 0.2,
+          vx: Math.cos(angle) * initialVelocity * (Math.random() * 0.5 + 0.5),
+          vy: Math.sin(angle) * initialVelocity * (Math.random() * 0.5 + 0.5),
+          hue: Math.random() * 60 + 200, // Blue-purple range
         });
       }
     };
 
     initializeParticles();
 
-    const animate = () => {
-      ctx.clearRect(0, 0, width, height);
+    const animate = (currentTime: number) => {
+      // Throttle to ~30 FPS for better performance
+      if (currentTime - lastTimeRef.current < 33) {
+        animationIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastTimeRef.current = currentTime;
 
+      // Use fillRect for better performance than clearRect
+      // Increased alpha from 0.1 to 0.3 to make trails fade faster
+      ctx.fillStyle = 'rgba(10, 14, 23, 0.3)'; 
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Batch rendering optimizations
+      ctx.globalCompositeOperation = 'lighter';
+      
       particlesRef.current.forEach((p) => {
+        // Update particle
         p.x += p.vx;
         p.y += p.vy;
         p.alpha -= fadeSpeed;
 
-        if (p.alpha <= 0) {
+        // Reset particle if it fades out or goes off screen
+        if (p.alpha <= 0 || p.x < -10 || p.x > canvas.width + 10 || p.y < -10 || p.y > canvas.height + 10) {
           const angle = Math.random() * Math.PI * 2;
           Object.assign(p, {
-            x: Math.random() * width,
-            y: Math.random() * height,
-            size: Math.random() * 2 + 1,
-            alpha: 1,
-            vx: Math.cos(angle) * initialVelocity * Math.random(),
-            vy: Math.sin(angle) * initialVelocity * Math.random(),
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 1.5 + 0.5,
+            alpha: Math.random() * 0.8 + 0.2,
+            vx: Math.cos(angle) * initialVelocity * (Math.random() * 0.5 + 0.5),
+            vy: Math.sin(angle) * initialVelocity * (Math.random() * 0.5 + 0.5),
+            hue: Math.random() * 60 + 200,
           });
         }
 
+        // Render particle with subtle color
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, p.alpha)})`;
+        ctx.fillStyle = `hsla(${p.hue}, 70%, 80%, ${Math.max(0, p.alpha * 0.6)})`;
         ctx.fill();
       });
 
-      requestAnimationFrame(animate);
+      ctx.globalCompositeOperation = 'source-over';
+      animationIdRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationIdRef.current = requestAnimationFrame(animate);
 
     const handleResize = () => {
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
-      canvas.width = newWidth;
-      canvas.height = newHeight;
+      updateCanvasSize();
+      // Re-initialize particles on resize to prevent them from being stuck off-screen
       initializeParticles();
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+      }
     };
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <canvas ref={canvasRef} className="absolute inset-0 z-[-1]" style={{ zIndex: -1 }} />
-      {/* Modern Background Texture */}
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%),
-                           linear-gradient(to bottom right, transparent 60%, rgba(99, 102, 241, 0.05) 100%)`,
-          backgroundSize: 'cover',
-        }}
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full opacity-40" 
+        style={{ 
+          zIndex: -1,
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+        }} 
       />
-
-      {/* Subtle grid pattern */}
-      <div
-        className="absolute inset-0 opacity-5 bg-grid"
-        style={{
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      {/* Animated lighting on the grid */}
-      <div
-        className="absolute inset-0 bg-lighting-overlay opacity-30 mix-blend-soft-light"
-      />
-
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-indigo-900/20" />
-
-      <style jsx global>{`
-        .bg-grid {
-          background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
-        }
-
-        .bg-lighting-overlay {
-          background-image: linear-gradient(45deg, rgba(139, 0, 139, 0.4), transparent 50%, rgba(0, 0, 255, 0.4));
-          background-size: 200% 200%;
-          background-repeat: no-repeat;
-          animation: grid-lighting 5s infinite alternate linear;
-          opacity: 0.5;
-          mix-blend-mode: soft-light;
-        }
-
-        @keyframes grid-lighting {
-          0% {
-            background-position: 0% 0%;
-          }
-          100% {
-            background-position: 100% 100%;
-          }
-        }
-      `}</style>
+      {/* Simplified gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-950/50 via-transparent to-indigo-950/30 pointer-events-none" />
     </div>
   );
 }

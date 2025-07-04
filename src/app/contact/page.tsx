@@ -4,265 +4,279 @@ import Navbar from "../_components/navbar/navbar";
 import { motion } from 'framer-motion';
 import React from "react";
 import { useState } from 'react';
-import Background from '../_components/background/background'; // Import Background component
+import Background from '../_components/background/background';
+import { Mail, Phone, Github, Linkedin, Instagram, CheckCircle, ExternalLink, Copy } from 'lucide-react';
 
 export default function ContactPage() {
   const [copied, setCopied] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ // Estado para los datos del formulario
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [formSubmitted, setFormSubmitted] = useState(false); // Estado para controlar si el formulario se envió
-  const [submitMessage, setSubmitMessage] = useState(''); // Mensaje de éxito/error
 
-  const copyToClipboard = (text: string, type: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(type);
-    setTimeout(() => setCopied(null), 2000);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Previene el envío por defecto del formulario
-
-    const { name, email, subject, message } = formData;
-    const recipientEmail = "alejandro.g.engineer@gmail.com";
-    const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-
+  const copyToClipboard = async (text: string, type: string) => {
     try {
-      window.location.href = mailtoLink; // Abre el cliente de correo
-      setFormSubmitted(true);
-      setSubmitMessage("¡Gracias! Tu cliente de correo se ha abierto con el mensaje pre-llenado.");
-      setFormData({ // Limpia el formulario después de "enviar"
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
-    } catch (error) {
-      setSubmitMessage("Hubo un problema al abrir el cliente de correo. Por favor, copia la información manualmente.");
-      console.error("Error al abrir mailto:", error);
+      await navigator.clipboard.writeText(text);
+      setCopied(type);
+      setTimeout(() => setCopied(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
     }
   };
 
   const contacts = [
     {
       type: 'email',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-          <polyline points="22,6 12,13 2,6"></polyline>
-        </svg>
-      ),
+      icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      value: "Click to copy",
-      action: () => copyToClipboard("alejandro.g.engineer@gmail.com", 'email')
+      value: "alejandro.g.engineer@gmail.com",
+      displayValue: "Click to copy",
+      action: () => copyToClipboard("alejandro.g.engineer@gmail.com", 'email'),
+      copyable: true
     },
     {
       type: 'phone',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-        </svg>
-      ),
-      title: "Teléfono",
-      value: "Click to copy",
-      action: () => copyToClipboard("+524434489639", 'phone')
+      icon: <Phone className="w-6 h-6" />,
+      title: "Phone",
+      value: "+524434489639",
+      displayValue: "Click to copy",
+      action: () => copyToClipboard("+524434489639", 'phone'),
+      copyable: true
     },
     {
       type: 'linkedin',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-          <rect x="2" y="9" width="4" height="12"></rect>
-          <circle cx="4" cy="4" r="2"></circle>
-        </svg>
-      ),
+      icon: <Linkedin className="w-6 h-6" />,
       title: "LinkedIn",
-      value: "Alejandro González",
-      action: () => window.open("https://linkedin.com/in/alejandro-gonzalez-06b69031b", "_blank")
+      value: "https://linkedin.com/in/alejandro-gonzalez-06b69031b",
+      displayValue: "Alejandro González",
+      action: () => window.open("https://linkedin.com/in/alejandro-gonzalez-06b69031b", "_blank"),
+      copyable: false
     },
     {
       type: 'github',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-        </svg>
-      ),
+      icon: <Github className="w-6 h-6" />,
       title: "GitHub",
-      value: "AlejandroG-code",
-      action: () => window.open("https://github.com/AlejandroG-code", "_blank")
+      value: "https://github.com/AlejandroG-code",
+      displayValue: "AlejandroG-code",
+      action: () => window.open("https://github.com/AlejandroG-code", "_blank"),
+      copyable: false
     },
     {
       type: 'instagram',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-        </svg>
-      ),
+      icon: <Instagram className="w-6 h-6" />,
       title: "Instagram",
-      value: "@a1ex_glz",
-      action: () => window.open("https://instagram.com/a1ex_glz", "_blank")
+      value: "https://instagram.com/a1ex_glz",
+      displayValue: "@a1ex_glz",
+      action: () => window.open("https://instagram.com/a1ex_glz", "_blank"),
+      copyable: false
     }
   ];
 
   return (
-    <div className="relative min-h-screen bg-gray-950 text-white">
+    <div className="relative min-h-screen bg-gray-950 text-white overflow-hidden">
       <Background />
-      <>
-        <Navbar />
-        <section className="py-20 px-4 relative z-10"> {/* Eliminado min-h-[150vh] si no es necesario */}
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
+      <Navbar />
+      <section className="py-16 px-4 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          {/* Header with improved animations */}
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center mb-20"
+          >
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="inline-block relative"
             >
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
-                  Contact Me
+              <motion.div 
+                className="absolute -inset-2 bg-gradient-to-r from-indigo-500/50 to-pink-500/50 rounded-full blur-3xl opacity-0"
+                animate={{ opacity: [0, 0.7, 0.3, 1, 0.5, 0], scale: [1, 1.2, 1] }}
+                transition={{ duration: 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+              />
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 relative">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient-x">
+                  Get In Touch
                 </span>
-              </h1>
-              <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                I&#39;m always open to new opportunities and collaborations. Feel free to reach out through any of the platforms below.
-              </p>
-            </motion.div>
-
-            {/* Contact Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {contacts.map((contact, index) => (
                 <motion.div
-                  key={contact.type}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                  className="bg-gray-900/50 hover:bg-gray-800/50 border border-gray-800 hover:border-indigo-500/30 rounded-xl p-6 transition-all duration-300 cursor-pointer"
-                  onClick={contact.action}
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-gray-800 rounded-lg text-indigo-400">
-                      {contact.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-gray-400 text-sm font-medium">{contact.title}</h3>
-                      <p className="text-white font-medium mt-1">
-                        {contact.value}
-                      </p>
-                      {copied === contact.type && (
-                        <span className="text-xs text-green-400 mt-1 block">
-                          Copied to clipboard!
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Contact Form */}
-            <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                />
+              </h1>
+            </motion.div>
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-20 bg-gray-900/50 border border-gray-800 rounded-xl p-8"
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed"
             >
-              <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-                <span className="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
-                Message Me
-              </h2>
-              <p className="text-gray-400 mb-6">
-                Fill out the form below and I&#39;ll get back to you as soon as possible!
-              </p>
+              Ready to bring your ideas to life? I&apos;m always excited to collaborate on innovative projects 
+              and explore new opportunities. Let&apos;s create something amazing together!
+            </motion.p>
+          </motion.div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Your Name</label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="John Doe"
-                      required
-                    />
+          {/* Enhanced Contact Cards Grid */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+          >
+            {contacts.map((contact, index) => (
+              <motion.div
+                key={contact.type}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 0.9 + index * 0.1,
+                  ease: "easeOut"
+                }}
+                whileHover={{ 
+                  y: -8, 
+                  scale: 1.03,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="group relative bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md border border-gray-700/60 hover:border-indigo-400/60 rounded-3xl p-8 transition-all duration-300 cursor-pointer overflow-hidden shadow-2xl hover:shadow-indigo-500/40"
+                onClick={contact.action}
+              >
+                {/* Animated background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* Glowing border effect */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-indigo-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+                
+                {/* Top accent line */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-t-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="relative z-10 flex flex-col items-center text-center">
+                  <div
+                    className="mb-6 p-5 bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl text-indigo-400 group-hover:text-indigo-300 transition-all duration-300 shadow-xl group-hover:shadow-indigo-500/20 border border-gray-600/50 group-hover:scale-110 group-hover:rotate-12"
+                  >
+                    {contact.icon}
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Your Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="john.doe@example.com"
-                      required
-                    />
+                  
+                  <div className="w-full">
+                    <h3 className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-3 group-hover:text-gray-300 transition-colors duration-300">
+                      {contact.title}
+                    </h3>
+                    <p className="text-white font-bold text-xl mb-4 group-hover:text-indigo-100 transition-colors duration-300 leading-tight">
+                      {contact.displayValue}
+                    </p>
+                    
+                    <div className="flex items-center justify-center space-x-3 text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
+                      {contact.copyable ? (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          <span className="text-xs font-medium uppercase tracking-wide">Click to Copy</span>
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink className="w-4 h-4" />
+                          <span className="text-xs font-medium uppercase tracking-wide">Visit Profile</span>
+                        </>
+                      )}
+                    </div>
+                    
+                    {copied === contact.type && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                        className="mt-4 bg-green-500/20 border border-green-500/40 rounded-xl p-3 flex items-center justify-center space-x-2"
+                      >
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <span className="text-sm text-green-400 font-semibold">Copied to Clipboard!</span>
+                      </motion.div>
+                    )}
                   </div>
                 </div>
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">Subject</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    placeholder="Regarding a project..."
-                    required
+                
+                {/* Subtle pattern overlay */}
+                <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent" />
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Enhanced Call-to-Action Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+            className="relative bg-gradient-to-br from-gray-900/95 to-gray-800/60 backdrop-blur-md border border-gray-700/60 rounded-3xl p-12 lg:p-16 overflow-hidden shadow-2xl"
+          >
+            {/* Background decorations */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-500/15 to-purple-500/15 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-500/15 to-pink-500/15 rounded-full blur-2xl" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-full blur-xl" />
+            
+            <div className="relative z-10 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6, duration: 0.6 }}
+                className="mb-8"
+              >
+                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 flex items-center justify-center">
+                  <motion.div
+                    animate={{ 
+                      rotate: 360,
+                      scale: [1, 1.2, 1]
+                    }}
+                    transition={{ 
+                      rotate: { duration: 3, repeat: Infinity, ease: "linear" },
+                      scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    className="w-6 h-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full mr-4 shadow-lg"
                   />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">Your Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={6}
-                    className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y"
-                    placeholder="Hi Alejandro, I'd like to discuss..."
-                    required
-                  ></textarea>
-                </div>
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
-                >
-                  Send Message
-                </motion.button>
-              </form>
+                  Let&apos;s Build Something Amazing
+                </h2>
+                <p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
+                  Ready to turn your vision into reality? I&apos;m passionate about creating innovative solutions 
+                  and would love to collaborate on your next project. Let&apos;s connect and make something extraordinary!
+                </p>
+              </motion.div>
 
-              {formSubmitted && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 text-center text-green-400"
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.8, duration: 0.6 }}
+                className="bg-gradient-to-r from-indigo-500/25 via-purple-500/25 to-pink-500/25 rounded-2xl p-8 backdrop-blur-sm border border-gray-600/40 shadow-2xl"
+              >
+                <p className="text-2xl font-bold text-white mb-4">
+                  Primary Contact
+                </p>
+                <motion.button
+                  onClick={() => copyToClipboard("alejandro.g.engineer@gmail.com", 'main-email')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group inline-flex items-center space-x-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:shadow-indigo-500/30"
                 >
-                  {submitMessage}
-                </motion.p>
-              )}
-            </motion.div>
-          </div>
-        </section>
-      </>
+                  <Mail className="w-6 h-6 group-hover:scale-110 transition-transform duration-200" />
+                  <span className="text-lg hidden sm:inline">alejandro.g.engineer@gmail.com</span>
+                  <span className="text-lg sm:hidden">Copy Email</span>
+                  <Copy className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                </motion.button>
+                
+                {copied === 'main-email' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                    className="mt-6 bg-green-500/20 border border-green-500/40 rounded-xl p-4 flex items-center justify-center space-x-2"
+                  >
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span className="text-lg font-semibold text-green-400">Successfully copied to clipboard!</span>
+                  </motion.div>
+                )}
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

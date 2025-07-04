@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@next/font": "^14.2.15",
+    "@sendgrid/mail": "^8.1.5",
     "@vercel/speed-insights": "^1.2.0",
     "cookies-next": "^5.1.0",
     "framer-motion": "^12.12.1",
