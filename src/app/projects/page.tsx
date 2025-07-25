@@ -93,7 +93,7 @@ export default function Projects() {
     description: string;
     creationDate: string;
     githubUrl: string | null;
-    websiteUrl: string | null; // <--- ¡Añadido aquí!
+    websiteUrl: string | null;
     images: string[];
   }
 
@@ -167,12 +167,12 @@ export default function Projects() {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projectData.map((project, index) => (
+              {projectData.map((project) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
+                  transition={{ duration: 0.1 }}
                   whileHover={{ scale: 1.03, y: -8 }}
                   className={`group relative overflow-hidden rounded-2xl border border-gray-700/60 hover:border-indigo-500/60 transition-all duration-300 min-h-[300px] flex flex-col items-center justify-center bg-gradient-to-br from-gray-900/90 to-gray-800/60 backdrop-blur-md shadow-lg hover:shadow-indigo-500/30 ${projectExists(project) ? 'cursor-pointer' : ''}`}
                   onClick={() => projectExists(project) ? openModal(project.id) : undefined}
@@ -225,7 +225,7 @@ export default function Projects() {
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.8, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 250, damping: 50 }}
                     className="bg-gray-800 rounded-xl p-8 max-w-2xl w-full relative overflow-y-auto max-h-[90vh]"
                   >
                     <button onClick={closeModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-300">

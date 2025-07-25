@@ -52,14 +52,22 @@ export default function AboutMe() {
                   animate={{ opacity: [0, 0.7, 0.3, 1, 0.5, 0], scale: [1, 1.2, 1] }}
                   transition={{ duration: 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut", delay: 1 }}
                 />
-                <h1 className="relative text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
+                <h1 className="h-20 relative text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
                   Hello, I&#39;m <span className="text-white">Alejandro Gonzalez</span>
                 </h1>
               </div>
-              <div className="h-1 w-24 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mx-auto mb-6"></div> {/* mx-auto para centrar la línea */}
-              <p className="text-lg sm:text-xl text-gray-400 italic">
+              <div className="h-2 w-100 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mx-auto mb-6"></div> {/* mx-auto para centrar la línea */}
+              <p className="h-19 text-lg sm:text-xl text-gray-400 italic">
                 Systems Engineering Student | Passionate Developer | Tech Enthusiast
               </p>
+                <motion.p
+                className="h-10 text-lg sm:text-4xl text-gray-400 italic"
+                initial={{ opacity: 0.6, y: 0 }}
+                animate={{ opacity: [0.6, 1, 0.6], y: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+                >
+                👇
+                </motion.p>
             </motion.div>
 
             {/* Grid para About Me, Skills, Experience, Achievements, Contact, Goals */}
@@ -208,13 +216,13 @@ export default function AboutMe() {
                     </ul>
                   </div>
                   <div className="bg-indigo-900/20 p-6 rounded-lg border border-indigo-500/20">
-                    <h4 className="font-medium text-white mb-2 text-xl">IEEExtreme & Practice</h4>
+                    <h4 className="font-medium text-white mb-2 text-xl">IEEExtreme & Practice Community</h4>
                     <ul className="text-base text-gray-300 space-y-2">
                       <li>🏆 IEEExtreme 17.0 – Top 54.5% Globally</li>
                       <li> - Rank 2,307 out of 4,231</li>
-                      <li>🏆 IEEtreme 18.0 – Top 29.6% Globally</li>
+                      <li>🏆 IEExtreme 18.0 – Top 29.6% Globally</li>
                       <li> - Rank 1,717 out of 5,801</li>
-                      <li>🏆 IEEExtreme Practice – Top 9.4%</li>
+                      <li>🏆 IEEExtreme Practice Community – Top 9.4%</li>
                       <li> - Rank 2,727 out of 29,001</li>
                     </ul>
                   </div>
